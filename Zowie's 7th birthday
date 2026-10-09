@@ -1,0 +1,1062 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Magical Birthday ✧</title>
+<meta name="theme-color" content="#ffe4f0">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Pacifico&display=swap');
+
+:root {
+  --pink:#ffd9e9;
+  --pink2:#ffb9d5;
+  --purple:#e6d9ff;
+  --blue:#d9efff;
+  --yellow:#fff0bb;
+  --ink:#795b80;
+  --white:#fffdfd;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-snap-type:y proximity; }
+body {
+  margin:0; color:var(--ink);
+  font-family:'Nunito',sans-serif;
+  background:#fff8fc;
+}
+button,input,textarea,select { font:inherit; }
+button { cursor:pointer; }
+button:focus-visible,input:focus-visible,textarea:focus-visible {
+  outline:3px solid #b69aff; outline-offset:2px;
+}
+#toolbar {
+  position:sticky; top:0; z-index:1000;
+  background:rgba(255,250,254,.96);
+  backdrop-filter:blur(12px);
+  padding:10px 14px; border-bottom:1px solid #f2d9e9;
+  box-shadow:0 3px 18px #cba7c520;
+}
+.brand { font-weight:800; color:#bc78a4; }
+.toolbar-top {
+  display:flex; justify-content:space-between; align-items:center;
+  gap:10px; flex-wrap:wrap;
+}
+.tools {
+  display:flex; gap:7px; flex-wrap:wrap; margin-top:10px;
+}
+.btn {
+  border:1px solid #ead5f0; background:white; color:#795b80;
+  border-radius:13px; padding:8px 12px; font-weight:800;
+  font-size:12px; transition:.2s;
+}
+.btn:hover { transform:translateY(-1px); background:#fff0f8; }
+.btn.primary { background:#f5d8ff; }
+.btn.danger { color:#b45075; }
+.btn.active { background:#e4d9ff; }
+.small { font-size:11px; opacity:.8; }
+#editor {
+  display:grid; grid-template-columns:minmax(0,1fr) 280px;
+  gap:14px; max-width:1500px; margin:auto; padding:16px;
+}
+#pages { min-width:0; }
+.page {
+  position:relative; isolation:isolate; overflow:hidden;
+  min-height:700px; margin:0 auto 22px;
+  max-width:1000px; width:100%;
+  border:5px solid white; border-radius:25px;
+  box-shadow:0 10px 40px #ba8dbb26;
+  background:
+    radial-gradient(ellipse at 15% 10%,#fff 0%,transparent 28%),
+    radial-gradient(ellipse at 90% 90%,#ffe0ee 0%,transparent 35%),
+    linear-gradient(145deg,#fff1f8,#f3eaff 55%,#e9f7ff);
+  scroll-snap-align:start;
+}
+.page::before {
+  content:""; position:absolute; inset:12px;
+  border:1px dashed #e6acd1; border-radius:17px;
+  pointer-events:none; z-index:-1;
+}
+.page-head {
+  text-align:center; padding:36px 22px 10px;
+}
+.eyebrow {
+  text-transform:uppercase; letter-spacing:3px; font-size:11px;
+  font-weight:800; color:#b77ab0;
+}
+h1,h2 { font-family:'Pacifico',cursive; font-weight:400; }
+.page h2 { font-size:clamp(26px,5vw,43px); margin:8px 0; }
+.page p { line-height:1.7; }
+.cover-content {
+  text-align:center; max-width:700px; margin:0 auto;
+  padding:65px 24px 60px; position:relative;
+}
+.cover-content h1 {
+  font-size:clamp(43px,8vw,76px); line-height:1.25;
+  color:#d77fb0; margin:14px 0;
+  overflow-wrap:anywhere;
+  text-shadow:2px 3px white,4px 5px #eac4f3;
+}
+.subtitle { font-size:clamp(14px,2.3vw,20px); }
+.info-card {
+  margin:25px auto; max-width:420px; padding:22px;
+  border:2px solid white; border-radius:25px;
+  background:#ffffffa6; box-shadow:0 6px 20px #c69bc526;
+}
+.info-line { margin:10px 0; font-weight:800; overflow-wrap:anywhere; }
+.magic-button {
+  display:inline-block; padding:13px 26px; margin-top:5px;
+  color:#805d8e; background:linear-gradient(100deg,#ffd9ea,#e4dcff,#d7f1ff);
+  border:2px solid white; border-radius:30px;
+  font-weight:800; text-decoration:none;
+}
+.page-decor { position:absolute; inset:0; pointer-events:none; z-index:0; }
+.page-decor .floating { position:absolute; animation:float 4s ease-in-out infinite; }
+@keyframes float { 50% { transform:translateY(-9px) rotate(4deg); } }
+.page-content { position:relative; z-index:1; }
+.gallery {
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:13px; padding:25px clamp(16px,4vw,48px) 55px;
+}
+.gallery.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.gallery.single { grid-template-columns:minmax(0,360px); justify-content:center; }
+.frame {
+  position:relative; min-width:0; min-height:270px;
+  aspect-ratio:3/4; border:3px solid white; border-radius:15px;
+  background:#ffffff65; box-shadow:0 6px 18px #b48ac21b;
+  overflow:hidden; cursor:grab; touch-action:pan-y;
+}
+.frame::after {
+  content:""; position:absolute; inset:5px;
+  border:1px dashed #e6bbda; border-radius:9px;
+  pointer-events:none;
+}
+.frame img { width:100%; height:100%; object-fit:cover; display:block; }
+.frame .empty-label {
+  position:absolute; inset:0; display:flex; align-items:center;
+  justify-content:center; flex-direction:column; gap:8px;
+  color:#bb91b9; text-align:center; font-size:12px;
+}
+.frame.selected,.sticker.selected,.text-item.selected {
+  outline:3px solid #ad88ff; outline-offset:3px;
+}
+.frame.selected::before {
+  content:"SELECTED"; position:absolute; z-index:5; top:10px; left:10px;
+  background:#fff; padding:3px 6px; border-radius:8px;
+  font-size:9px; font-weight:800;
+}
+.sticker {
+  position:absolute; z-index:4; left:10%; top:10%;
+  font-size:48px; line-height:1; cursor:grab;
+  user-select:none; touch-action:none;
+  filter:drop-shadow(0 3px 3px #b993b533);
+}
+.sticker img { width:100%; height:100%; object-fit:contain; pointer-events:none; }
+.text-item {
+  position:absolute; z-index:5; left:10%; top:12%;
+  min-width:30px; max-width:80%; padding:5px;
+  white-space:pre-wrap; overflow-wrap:anywhere;
+  cursor:grab; touch-action:none; user-select:text;
+}
+.text-item[contenteditable="true"] { cursor:text; }
+.text-item.selected { background:#ffffff40; }
+.frame.selected,.sticker.selected { z-index:20; }
+.frame.selected { outline-offset:-4px; }
+.thankyou {
+  text-align:center; padding:100px 25px 90px;
+}
+.thankyou h2 { color:#d77fb0; font-size:clamp(34px,7vw,60px); }
+#panel {
+  align-self:start; position:sticky; top:125px;
+  max-height:calc(100vh - 145px); overflow:auto;
+  padding:17px; border:1px solid #f0d9ed; border-radius:20px;
+  background:#fffafd; box-shadow:0 6px 24px #c7a5c31a;
+}
+#panel h3 { margin:0 0 8px; color:#b66da0; }
+#panel label { display:block; margin-top:12px; font-size:12px; font-weight:800; }
+#panel input:not([type=color]):not([type=file]),
+#panel textarea,#panel select {
+  width:100%; padding:9px; border:1px solid #ead5e9;
+  border-radius:10px; background:white; color:var(--ink);
+  margin-top:5px;
+}
+#panel input[type=color] { width:100%; height:38px; margin-top:5px; }
+#panel input[type=range] { width:100%; }
+#panel input[type=file] { width:100%; margin-top:7px; font-size:11px; }
+#panel textarea { min-height:80px; resize:vertical; }
+.panel-actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+.rule { border:0; border-top:1px solid #f0ddea; margin:17px 0; }
+#toast {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  z-index:2000; background:#765b80; color:white; padding:10px 17px;
+  border-radius:30px; box-shadow:0 5px 25px #0002;
+  opacity:0; pointer-events:none; transition:opacity .2s;
+}
+#toast.show { opacity:1; }
+#fileInput { display:none; }
+.preview #toolbar,.preview #panel,.preview .editor-only { display:none!important; }
+.preview #editor { display:block; padding:0; max-width:none; }
+.preview .page { border-radius:0; border:0; box-shadow:none; max-width:none; margin:0; min-height:100vh; }
+.preview .page::before { border-radius:0; }
+.preview .page-head { padding-top:50px; }
+.preview .page:not(:first-child) { page-break-before:always; }
+@media(max-width:850px) {
+  #editor { grid-template-columns:1fr; padding:9px; }
+  #panel { position:relative; top:0; max-height:none; grid-row:1; }
+  .page { min-height:620px; }
+  .gallery { gap:7px; padding:22px 18px 45px; }
+  .frame { min-height:155px; border-width:2px; }
+  .sticker { font-size:35px; }
+}
+@media(max-width:430px) {
+  .gallery { gap:5px; padding-left:14px; padding-right:14px; }
+  .frame { min-height:115px; border-radius:10px; }
+  .frame::after { inset:3px; }
+  .cover-content { padding-top:50px; }
+  .page { min-height:570px; }
+}
+@media print {
+  #toolbar,#panel,.editor-only { display:none!important; }
+  #editor { display:block; padding:0; }
+  .page { border:0; box-shadow:none; border-radius:0; max-width:none; margin:0; min-height:100vh; page-break-after:always; }
+  body { background:white; }
+}
+
+/* Photo-frame layout correction */
+.gallery .frame {
+  width: 100% !important;
+  min-width: 0;
+  min-height: 0;
+  height: auto !important;
+  aspect-ratio: 3 / 4;
+  left: 0 !important;
+  top: 0 !important;
+}
+
+.gallery.single .frame {
+  width: 100% !important;
+}
+
+@media (max-width: 600px) {
+  .gallery .frame {
+    aspect-ratio: 3 / 4;
+  }
+}
+</style>
+</head>
+<body>
+
+<header id="toolbar">
+  <div class="toolbar-top">
+    <div>
+      <div class="brand">🎀 My Magical Invitation</div>
+      <div class="small">Create something sweet and unforgettable ✨</div>
+    </div>
+    <div class="tools" style="margin:0">
+      <button class="btn primary" onclick="saveProject()">💾 Save</button>
+      <button class="btn" onclick="togglePreview()">👀 Preview</button>
+      <button class="btn" onclick="exportJSON()">📦 Export Backup</button>
+      <button class="btn" onclick="document.getElementById('importInput').click()">📂 Import Backup</button>
+      <button class="btn" onclick="window.print()">🖨️ Print / PDF</button>
+    </div>
+  </div>
+  <div class="tools">
+    <button class="btn" onclick="addText()">＋ Add Text</button>
+    <button class="btn" onclick="addFrame()">▧ Add Photo Frame</button>
+    <button class="btn" onclick="document.getElementById('fileInput').click()">📷 Upload Photo</button>
+    <button class="btn" onclick="addSticker()">🎀 Add Sticker</button>
+    <button class="btn" onclick="changeBackground()">🌈 Background</button>
+    <button class="btn" onclick="duplicateSelected()">⧉ Duplicate</button>
+    <button class="btn danger" onclick="deleteSelected()">✕ Delete Selected</button>
+    <button class="btn" onclick="undo()">↶ Undo</button>
+    <button class="btn" onclick="redo()">↷ Redo</button>
+  </div>
+</header>
+
+<div id="editor">
+<main id="pages">
+
+<!-- PAGE 1 -->
+<section class="page" id="page1" data-page="1">
+  <div class="page-decor">
+    <span class="floating" style="left:7%;top:7%;font-size:40px">🎀</span>
+    <span class="floating" style="right:8%;top:11%;font-size:32px">⭐</span>
+    <span class="floating" style="left:10%;bottom:13%;font-size:30px">☁️</span>
+    <span class="floating" style="right:9%;bottom:15%;font-size:35px">💗</span>
+    <span class="floating" style="left:20%;top:35%;font-size:20px">✨</span>
+    <span class="floating" style="right:18%;top:44%;font-size:23px">🌸</span>
+  </div>
+  <div class="page-content cover-content">
+    <div class="eyebrow">A little magic is coming your way</div>
+    <div style="font-size:54px;margin-top:10px">🎀 🩷 🦄</div>
+    <h1 class="editable-title">My Magical 7th Birthday</h1>
+    <p class="subtitle">You're invited to a day filled with love, laughter, and fairy-tale wishes!</p>
+    <div class="info-card">
+      <div class="info-line">🎂 <span data-edit="name">Celebrant's Name</span></div>
+      <div class="info-line">🗓️ <span data-edit="date">Birthday Date & Time</span></div>
+      <div class="info-line">📍 <span data-edit="venue">Venue and Location</span></div>
+    </div>
+    <a href="#page2" class="magic-button">Let's Celebrate! ✨</a>
+    <p style="font-size:12px">A fairytale made sweeter with you ♡</p>
+  </div>
+</section>
+
+<!-- PAGE 2 -->
+<section class="page" id="page2" data-page="2">
+  <div class="page-decor">
+    <span class="floating" style="left:8%;top:9%;font-size:36px">🌸</span>
+    <span class="floating" style="right:8%;top:12%;font-size:40px">🎀</span>
+    <span class="floating" style="left:12%;bottom:15%;font-size:30px">💗</span>
+    <span class="floating" style="right:12%;bottom:14%;font-size:30px">✨</span>
+  </div>
+  <div class="page-content">
+    <div class="page-head">
+      <div class="eyebrow">Our birthday princess</div>
+      <h2>Little Star, Big Dreams</h2>
+    </div>
+    <div class="gallery single" id="gallery2"></div>
+  </div>
+</section>
+
+<!-- PAGE 3 -->
+<section class="page" id="page3" data-page="3">
+  <div class="page-decor">
+    <span class="floating" style="left:5%;top:8%;font-size:35px">🎀</span>
+    <span class="floating" style="right:6%;top:8%;font-size:31px">⭐</span>
+    <span class="floating" style="left:8%;bottom:7%;font-size:27px">🌷</span>
+    <span class="floating" style="right:7%;bottom:8%;font-size:32px">💖</span>
+  </div>
+  <div class="page-content">
+    <div class="page-head">
+      <div class="eyebrow">A collection of little treasures</div>
+      <h2>Seven Treasures ✨</h2>
+      <p style="font-size:13px">Every little gift holds a little love.</p>
+    </div>
+    <div class="gallery" id="gallery3"></div>
+  </div>
+</section>
+
+<!-- PAGE 4 -->
+<section class="page" id="page4" data-page="4">
+  <div class="page-decor">
+    <span class="floating" style="left:6%;top:9%;font-size:34px">🦋</span>
+    <span class="floating" style="right:7%;top:9%;font-size:35px">🎀</span>
+    <span class="floating" style="left:8%;bottom:8%;font-size:29px">💜</span>
+    <span class="floating" style="right:8%;bottom:9%;font-size:28px">☁️</span>
+  </div>
+  <div class="page-content">
+    <div class="page-head">
+      <div class="eyebrow">Moments to keep forever</div>
+      <h2>Special Memories 🌷</h2>
+      <p style="font-size:13px">A little scrapbook of love and happiness.</p>
+    </div>
+    <div class="gallery three" id="gallery4"></div>
+  </div>
+</section>
+
+<!-- PAGE 5 -->
+<section class="page" id="page5" data-page="5">
+  <div class="page-decor">
+    <span class="floating" style="left:9%;top:12%;font-size:35px">🎀</span>
+    <span class="floating" style="right:9%;top:13%;font-size:33px">⭐</span>
+    <span class="floating" style="left:10%;bottom:13%;font-size:30px">🌸</span>
+    <span class="floating" style="right:10%;bottom:13%;font-size:34px">💗</span>
+    <span class="floating" style="left:43%;top:10%;font-size:24px">✨</span>
+  </div>
+  <div class="page-content thankyou">
+    <div style="font-size:64px">🎀 🩷 🌷</div>
+    <div class="eyebrow">Until our next fairytale</div>
+    <h2>Thank You!</h2>
+    <p class="thank-message" style="max-width:540px;margin:20px auto">
+      Thank you for making my little world brighter! I can't wait to celebrate this magical day with you. See you in my fairytale!
+    </p>
+    <div style="font-size:44px;margin-top:25px">☁️ ✨ 🏰 ✨ ☁️</div>
+    <p style="font-weight:800">With love and a little sparkle ♡</p>
+  </div>
+</section>
+
+</main>
+
+<aside id="panel">
+  <h3>🪄 Magic Editing Studio</h3>
+  <p class="small">Choose an element on a page to edit it. You can also drag text, frames, and stickers around.</p>
+  <hr class="rule">
+  <div id="noSelection">
+    <strong>Welcome, party planner! 💗</strong>
+    <p class="small">Select a text, photo frame, or sticker. To edit the birthday details, click their text on Page 1.</p>
+    <label>Celebrant's Name
+      <input id="nameInput" placeholder="Enter name">
+    </label>
+    <label>Birthday Date & Time
+      <input id="dateInput" placeholder="Enter date and time">
+    </label>
+    <label>Venue and Location
+      <input id="venueInput" placeholder="Enter venue">
+    </label>
+    <label>Cover Heading
+      <input id="headingInput" placeholder="My Magical 7th Birthday">
+    </label>
+    <label>Thank-you Message
+      <textarea id="thanksInput"></textarea>
+    </label>
+    <button class="btn primary" style="width:100%;margin-top:12px" onclick="applyDetails()">Apply Birthday Details</button>
+  </div>
+
+  <div id="selectionTools" hidden>
+    <hr class="rule">
+    <h3>Selected Element</h3>
+    <div id="selectedDescription" class="small"></div>
+
+    <div id="textTools" hidden>
+      <label>Text Content
+        <textarea id="textContent"></textarea>
+      </label>
+      <label>Font
+        <select id="textFont">
+          <option value="Nunito">Nunito — cute & readable</option>
+          <option value="Pacifico">Pacifico — magical script</option>
+          <option value="Georgia">Georgia — elegant</option>
+          <option value="Arial">Arial — simple</option>
+        </select>
+      </label>
+      <label>Font Size
+        <input type="range" id="textSize" min="10" max="100" value="24">
+      </label>
+      <label>Text Color
+        <input type="color" id="textColor" value="#d77fb0">
+      </label>
+      <label>Alignment
+        <select id="textAlign">
+          <option value="left">Left</option>
+          <option value="center">Center</option>
+          <option value="right">Right</option>
+        </select>
+      </label>
+      <label>Text Background
+        <input type="color" id="textBg" value="#ffffff">
+      </label>
+      <label><input type="checkbox" id="textBgOn"> Show background</label>
+    </div>
+
+    <div id="frameTools" hidden>
+      <label>Upload / Replace Photo
+        <input type="file" id="frameUpload" accept="image/*">
+      </label>
+      <label>Frame Background
+        <input type="color" id="frameColor" value="#fff8fc">
+      </label>
+      <label>Corner Roundness
+        <input type="range" id="frameRadius" min="0" max="50" value="15">
+      </label>
+      <label>Border Color
+        <input type="color" id="frameBorder" value="#ffffff">
+      </label>
+      <label>Photo Fit
+        <select id="photoFit">
+          <option value="cover">Fill frame</option>
+          <option value="contain">Show full photo</option>
+        </select>
+      </label>
+      <button class="btn" onclick="clearPhoto()">Remove Photo</button>
+    </div>
+
+    <div id="stickerTools" hidden>
+      <label>Character / Decoration
+        <select id="stickerChoice">
+          <option value="🎀">Bow</option>
+          <option value="🐱">Cute Kitty</option>
+          <option value="🐰">Bunny</option>
+          <option value="☁️">Cloud</option>
+          <option value="⭐">Star</option>
+          <option value="💗">Heart</option>
+          <option value="🌸">Flower</option>
+          <option value="🦋">Butterfly</option>
+          <option value="🧸">Teddy Bear</option>
+          <option value="🍮">Pudding</option>
+          <option value="🐶">Puppy</option>
+          <option value="✨">Sparkles</option>
+        </select>
+      </label>
+      <label>Upload Sticker Image (PNG recommended)
+        <input type="file" id="stickerUpload" accept="image/*">
+      </label>
+      <label>Sticker Size
+        <input type="range" id="stickerSize" min="20" max="180" value="55">
+      </label>
+    </div>
+
+    <div class="panel-actions">
+      <button class="btn" onclick="duplicateSelected()">⧉ Duplicate</button>
+      <button class="btn danger" onclick="deleteSelected()">✕ Delete</button>
+      <button class="btn" onclick="bringForward()">⬆ Bring Forward</button>
+      <button class="btn" onclick="sendBackward()">⬇ Send Back</button>
+    </div>
+  </div>
+
+  <hr class="rule">
+  <h3>🌈 Page Background</h3>
+  <label>Choose a pastel color
+    <input type="color" id="bgPicker" value="#fff1f8">
+  </label>
+  <button class="btn" style="width:100%;margin-top:8px" onclick="setPageBackground()">Apply to Current Page</button>
+  <hr class="rule">
+  <p class="small">💡 Tip: Upload your own Sanrio character sticker PNGs to make the design more recognizable. Uploaded photos and stickers are saved with your project when browser storage allows.</p>
+</aside>
+</div>
+
+<input type="file" id="fileInput" accept="image/*">
+<input type="file" id="importInput" accept=".json,application/json" hidden>
+<div id="toast" role="status"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+let selected = null;
+let currentPage = 1;
+let nextId = 1;
+let historyStack = [];
+let redoStack = [];
+let previewMode = false;
+let drag = null;
+let toastTimer;
+
+const pageElements = {
+  1: [],
+  2: [],
+  3: [],
+  4: [],
+  5: []
+};
+
+function uid() { return 'el' + nextId++; }
+function currentPageEl() { return $('page' + currentPage); }
+
+function toast(message) {
+  const t = $('toast');
+  t.textContent = message;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function snapshot() {
+  try {
+    historyStack.push(JSON.stringify(serialize()));
+    if (historyStack.length > 30) historyStack.shift();
+    redoStack = [];
+  } catch (e) {}
+}
+
+function serialize() {
+  const pages = {};
+  for (let n=1;n<=5;n++) {
+    const p = $('page'+n);
+    pages[n] = {
+      background: p.style.background || '',
+      elements: pageElements[n].map(el => ({
+        ...el,
+        style: {...el.style}
+      }))
+    };
+  }
+  return {
+    version:1, nextId, details:{
+      name:$('nameInput').value,
+      date:$('dateInput').value,
+      venue:$('venueInput').value,
+      heading:$('headingInput').value,
+      thanks:$('thanksInput').value
+    }, pages
+  };
+}
+
+function restore(data) {
+  if (!data || !data.pages) throw new Error('Invalid project');
+  nextId = data.nextId || 1;
+  Object.values(pageElements).forEach(arr => arr.splice(0,arr.length));
+  for (let n=1;n<=5;n++) {
+    const p = $('page'+n);
+    p.querySelectorAll('.text-item,.frame,.sticker').forEach(el => el.remove());
+    const pg = data.pages[n];
+    if (!pg) continue;
+    p.style.background = pg.background || '';
+    pageElements[n] = (pg.elements || []).map(el => ({...el,style:{...(el.style||{})}}));
+    pageElements[n].forEach(el => renderElement(n,el));
+  }
+  const d = data.details || {};
+  $('nameInput').value = d.name || '';
+  $('dateInput').value = d.date || '';
+  $('venueInput').value = d.venue || '';
+  $('headingInput').value = d.heading || '';
+  $('thanksInput').value = d.thanks || '';
+  applyDetails(false);
+  selectElement(null);
+}
+
+function saveProject() {
+  try {
+    localStorage.setItem('magicalBirthdayProject', JSON.stringify(serialize()));
+    toast('Your invitation is saved in this browser! 💗');
+  } catch (e) {
+    toast('Storage is full. Export a backup or use smaller photos.');
+  }
+}
+
+function loadProject() {
+  try {
+    const saved = localStorage.getItem('magicalBirthdayProject');
+    if (saved) restore(JSON.parse(saved));
+  } catch (e) {
+    toast('Saved project could not be loaded.');
+  }
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(serialize(),null,2)],{type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'my-magical-birthday-backup.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Backup exported! Keep it somewhere safe.');
+}
+
+$('importInput').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    restore(JSON.parse(await file.text()));
+    saveProject();
+    toast('Backup imported successfully! 🎀');
+  } catch(err) { toast('That backup file could not be opened.'); }
+  e.target.value = '';
+});
+
+function undo() {
+  if (!historyStack.length) return toast('Nothing to undo yet.');
+  redoStack.push(JSON.stringify(serialize()));
+  restore(JSON.parse(historyStack.pop()));
+  toast('Undo complete.');
+}
+function redo() {
+  if (!redoStack.length) return toast('Nothing to redo yet.');
+  historyStack.push(JSON.stringify(serialize()));
+  restore(JSON.parse(redoStack.pop()));
+  toast('Redo complete.');
+}
+
+function addElement(page, type, props={}) {
+  snapshot();
+  const el = {
+    id:uid(), type,
+    x:props.x ?? 10, y:props.y ?? 10,
+    w:props.w ?? 80, h:props.h ?? 300,
+    content:props.content || '',
+    src:props.src || '',
+    emoji:props.emoji || '🎀',
+    style:props.style || {}
+  };
+  pageElements[page].push(el);
+  renderElement(page,el);
+  selectElement(el.id);
+  return el;
+}
+
+function addText() {
+  addElement(currentPage,'text',{
+    x:12,y:20,w:65,content:'Write your message here ✨',
+    style:{fontSize:28,color:'#d77fb0',fontFamily:'Nunito',textAlign:'center'}
+  });
+  toast('New text added! Edit it in the panel.');
+}
+
+function addSticker() {
+  addElement(currentPage,'sticker',{
+    x:12,y:18,w:60,h:60,emoji:'🎀'
+  });
+  toast('Sticker added! Choose a decoration in the panel.');
+}
+
+function addFrame() {
+  addElement(currentPage,'frame',{
+    x:10,y:20,w:80,h:280,
+    style:{background:'#fff8fc',borderColor:'#ffffff',borderRadius:15,objectFit:'cover'}
+  });
+  toast('Photo frame added!');
+}
+
+function renderElement(page, data) {
+  const p = $('page'+page);
+  let el;
+  if (data.type === 'text') {
+    el = document.createElement('div');
+    el.className = 'text-item';
+    el.textContent = data.content;
+    el.style.fontSize = (data.style.fontSize || 24) + 'px';
+    el.style.color = data.style.color || '#d77fb0';
+    el.style.fontFamily = data.style.fontFamily || 'Nunito';
+    el.style.textAlign = data.style.textAlign || 'center';
+    if (data.style.backgroundOn) el.style.background = data.style.background || '#ffffff';
+    el.style.borderRadius = '10px';
+    el.style.fontWeight = '800';
+    el.style.minHeight = '24px';
+  } else if (data.type === 'frame') {
+    el = document.createElement('div');
+    el.className = 'frame';
+    el.style.background = data.style.background || '#fff8fc';
+    el.style.borderColor = data.style.borderColor || '#ffffff';
+    el.style.borderRadius = (data.style.borderRadius ?? 15) + 'px';
+    if (data.src) {
+      const img = document.createElement('img');
+      img.src = data.src;
+      img.alt = 'Birthday photo';
+      img.style.objectFit = data.style.objectFit || 'cover';
+      el.appendChild(img);
+    } else {
+      const empty = document.createElement('div');
+      empty.className = 'empty-label';
+      empty.innerHTML = '<span style="font-size:30px">♡</span><span>Photo goes here</span>';
+      el.appendChild(empty);
+    }
+  } else if (data.type === 'sticker') {
+    el = document.createElement('div');
+    el.className = 'sticker';
+    el.style.width = data.w + 'px';
+    el.style.height = data.h + 'px';
+    if (data.src) {
+      const img = document.createElement('img');
+      img.src = data.src;
+      img.alt = 'Decorative sticker';
+      el.appendChild(img);
+    } else {
+      el.textContent = data.emoji || '🎀';
+      el.style.fontSize = Math.min(data.w,data.h) + 'px';
+    }
+  } else return;
+
+  el.dataset.id = data.id;
+  el.style.left = data.x + '%';
+  el.style.top = data.y + '%';
+  if (data.type !== 'sticker') {
+    el.style.width = data.w + '%';
+    if (data.type === 'frame') {
+      el.style.height = data.h + 'px';
+    } else {
+      el.style.height = 'auto';
+      el.style.minHeight = '25px';
+    }
+  }
+  p.appendChild(el);
+  attachElementEvents(el,page,data);
+}
+
+function attachElementEvents(node,page,data) {
+  node.addEventListener('click', e => {
+    e.stopPropagation();
+    selectElement(data.id);
+  });
+  node.addEventListener('pointerdown', e => {
+    if (e.target.isContentEditable) return;
+    if (e.button !== 0) return;
+    e.stopPropagation();
+    selectElement(data.id);
+    const rect = $('page'+page).getBoundingClientRect();
+    drag = {
+      id:data.id,page,
+      startX:e.clientX,startY:e.clientY,
+      oldX:data.x,oldY:data.y,
+      pageW:rect.width,pageH:rect.height,
+      moved:false
+    };
+    node.setPointerCapture?.(e.pointerId);
+  });
+  node.addEventListener('dblclick', () => {
+    if (data.type==='text') {
+      node.contentEditable='true';
+      node.focus();
+      toast('Edit the text directly, then click outside.');
+    } else if (data.type==='frame') {
+      $('frameUpload').click();
+    }
+  });
+  if (data.type==='text') {
+    node.addEventListener('input', () => { data.content = node.innerText; $('textContent').value = data.content; });
+    node.addEventListener('blur', () => { node.contentEditable='false'; data.content=node.innerText; });
+  }
+}
+
+document.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const data = findElement(drag.id);
+  if (!data) return;
+  const dx = e.clientX-drag.startX, dy=e.clientY-drag.startY;
+  if (Math.abs(dx)+Math.abs(dy)>3) drag.moved=true;
+  if (!drag.moved) return;
+  data.x = Math.max(0,Math.min(95,drag.oldX+dx/drag.pageW*100));
+  data.y = Math.max(0,Math.min(95,drag.oldY+dy/drag.pageH*100));
+  const node = document.querySelector(`[data-id="${data.id}"]`);
+  if (node) { node.style.left=data.x+'%'; node.style.top=data.y+'%'; }
+});
+document.addEventListener('pointerup', () => {
+  if (drag && drag.moved) snapshot();
+  drag = null;
+});
+
+document.querySelectorAll('.page').forEach(p => {
+  p.addEventListener('click', e => {
+    if (e.target===p || e.target.classList.contains('page-decor') || e.target.classList.contains('page-content')) {
+      currentPage=Number(p.dataset.page);
+      selectElement(null);
+    }
+  });
+});
+
+function findElement(id) {
+  for (let n=1;n<=5;n++) {
+    const el=pageElements[n].find(e=>e.id===id);
+    if (el) return el;
+  }
+  return null;
+}
+
+function findElementPage(id) {
+  for (let n=1;n<=5;n++) if (pageElements[n].some(e=>e.id===id)) return n;
+  return currentPage;
+}
+
+function selectElement(id) {
+  selected=id;
+  document.querySelectorAll('.selected').forEach(n=>n.classList.remove('selected'));
+  if (!id) {
+    $('selectionTools').hidden=true;
+    $('noSelection').hidden=false;
+    return;
+  }
+  const data=findElement(id);
+  if (!data) return selectElement(null);
+  currentPage=findElementPage(id);
+  const node=document.querySelector(`[data-id="${id}"]`);
+  if (node) node.classList.add('selected');
+  $('selectionTools').hidden=false;
+  $('noSelection').hidden=true;
+  $('selectedDescription').textContent=data.type.toUpperCase()+' on Page '+currentPage;
+  $('textTools').hidden=data.type!=='text';
+  $('frameTools').hidden=data.type!=='frame';
+  $('stickerTools').hidden=data.type!=='sticker';
+
+  if(data.type==='text') {
+    $('textContent').value=data.content;
+    $('textFont').value=data.style.fontFamily||'Nunito';
+    $('textSize').value=parseInt(data.style.fontSize)||24;
+    $('textColor').value=data.style.color||'#d77fb0';
+    $('textAlign').value=data.style.textAlign||'center';
+    $('textBgOn').checked=!!data.style.backgroundOn;
+    $('textBg').value=data.style.background||'#ffffff';
+  } else if(data.type==='frame') {
+    $('frameColor').value=data.style.background||'#fff8fc';
+    $('frameRadius').value=data.style.borderRadius??15;
+    $('frameBorder').value=data.style.borderColor||'#ffffff';
+    $('photoFit').value=data.style.objectFit||'cover';
+  } else if(data.type==='sticker') {
+    $('stickerChoice').value=data.emoji||'🎀';
+    $('stickerSize').value=data.w||55;
+  }
+}
+
+function refreshSelected() {
+  if (!selected) return;
+  const data=findElement(selected), page=findElementPage(selected);
+  if(!data) return;
+  const old=document.querySelector(`[data-id="${selected}"]`);
+  if(old) old.remove();
+  renderElement(page,data);
+  selectElement(data.id);
+}
+
+$('textContent').addEventListener('input',e=>{
+  const d=findElement(selected); if(!d||d.type!=='text')return;
+  d.content=e.target.value;
+  const node=document.querySelector(`[data-id="${selected}"]`);
+  if(node) node.textContent=d.content;
+});
+$('textFont').addEventListener('change',e=>updateStyle('fontFamily',e.target.value));
+$('textSize').addEventListener('input',e=>updateStyle('fontSize',Number(e.target.value)));
+$('textColor').addEventListener('input',e=>updateStyle('color',e.target.value));
+$('textAlign').addEventListener('change',e=>updateStyle('textAlign',e.target.value));
+$('textBg').addEventListener('input',e=>updateStyle('background',e.target.value));
+$('textBgOn').addEventListener('change',e=>updateStyle('backgroundOn',e.target.checked));
+$('frameColor').addEventListener('input',e=>updateStyle('background',e.target.value));
+$('frameRadius').addEventListener('input',e=>updateStyle('borderRadius',Number(e.target.value)));
+$('frameBorder').addEventListener('input',e=>updateStyle('borderColor',e.target.value));
+$('photoFit').addEventListener('change',e=>{
+  updateStyle('objectFit',e.target.value);
+  const d=findElement(selected),node=document.querySelector(`[data-id="${selected}"] img`);
+  if(d&&node)node.style.objectFit=e.target.value;
+});
+$('stickerChoice').addEventListener('change',e=>{
+  const d=findElement(selected); if(!d||d.type!=='sticker')return;
+  d.emoji=e.target.value; d.src=''; refreshSelected();
+});
+$('stickerSize').addEventListener('input',e=>{
+  const d=findElement(selected);if(!d||d.type!=='sticker')return;
+  d.w=Number(e.target.value);d.h=d.w;
+  const node=document.querySelector(`[data-id="${selected}"]`);
+  if(node){node.style.width=d.w+'px';node.style.height=d.h+'px';node.style.fontSize=d.w+'px';}
+});
+
+function updateStyle(key,value) {
+  const d=findElement(selected); if(!d)return;
+  d.style[key]=value;
+  refreshSelected();
+}
+
+$('frameUpload').addEventListener('change',e=>readImage(e.target.files[0],src=>{
+  const d=findElement(selected); if(!d||d.type!=='frame')return;
+  snapshot();d.src=src;refreshSelected();e.target.value='';
+}));
+$('fileInput').addEventListener('change',e=>{
+  const file=e.target.files[0]; if(!file)return;
+  readImage(file,src=>{
+    if(selected && findElement(selected)?.type==='frame'){
+      snapshot();findElement(selected).src=src;refreshSelected();
+    } else {
+      const d=addElement(currentPage,'frame',{x:10,y:15,w:80,h:300,src});
+      toast('Photo added to Page '+currentPage);
+    }
+    e.target.value='';
+  });
+});
+$('stickerUpload').addEventListener('change',e=>readImage(e.target.files[0],src=>{
+  const d=findElement(selected); if(!d||d.type!=='sticker')return;
+  snapshot();d.src=src;refreshSelected();e.target.value='';
+}));
+
+function readImage(file,callback) {
+  if(!file)return;
+  if(!file.type.startsWith('image/'))return toast('Please choose an image file.');
+  if(file.size>5*1024*1024) {
+    return toast('Please choose an image smaller than 5 MB.');
+  }
+  const reader=new FileReader();
+  reader.onload=()=>callback(reader.result);
+  reader.onerror=()=>toast('Could not read that image.');
+  reader.readAsDataURL(file);
+}
+
+function clearPhoto() {
+  const d=findElement(selected);
+  if(!d||d.type!=='frame')return;
+  snapshot();d.src='';refreshSelected();toast('Photo removed.');
+}
+function deleteSelected() {
+  if(!selected)return toast('Select an element first.');
+  snapshot();
+  const page=findElementPage(selected);
+  pageElements[page]=pageElements[page].filter(e=>e.id!==selected);
+  document.querySelectorAll(`[data-id="${selected}"]`).forEach(e=>e.remove());
+  selectElement(null);toast('Element deleted.');
+}
+function duplicateSelected() {
+  if(!selected)return toast('Select an element first.');
+  const d=findElement(selected);if(!d)return;
+  const copy=JSON.parse(JSON.stringify(d));
+  copy.id=uid();copy.x=Math.min(90,copy.x+4);copy.y=Math.min(90,copy.y+4);
+  snapshot();pageElements[findElementPage(selected)].push(copy);
+  renderElement(findElementPage(selected),copy);selectElement(copy.id);
+  toast('Element duplicated!');
+}
+function bringForward() {
+  const node=document.querySelector(`[data-id="${selected}"]`);
+  if(node)node.style.zIndex=(parseInt(node.style.zIndex)||10)+1;
+}
+function sendBackward() {
+  const node=document.querySelector(`[data-id="${selected}"]`);
+  if(node)node.style.zIndex=Math.max(1,(parseInt(node.style.zIndex)||10)-1);
+}
+
+function applyDetails(takeSnapshot=true) {
+  if(takeSnapshot)snapshot();
+  document.querySelector('[data-edit="name"]').textContent=$('nameInput').value||"Celebrant's Name";
+  document.querySelector('[data-edit="date"]').textContent=$('dateInput').value||'Birthday Date & Time';
+  document.querySelector('[data-edit="venue"]').textContent=$('venueInput').value||'Venue and Location';
+  document.querySelector('.editable-title').textContent=$('headingInput').value||'My Magical 7th Birthday';
+  document.querySelector('.thank-message').textContent=$('thanksInput').value||'Thank you for making my little world brighter! See you in my fairytale!';
+  toast('Birthday details updated! 🎂');
+}
+function changeBackground() {
+  $('bgPicker').click();
+}
+function setPageBackground() {
+  snapshot();
+  currentPageEl().style.background=`radial-gradient(ellipse at 15% 10%,#fff 0%,transparent 28%),linear-gradient(145deg,${$('bgPicker').value},#f3eaff)`;
+  toast('Page background changed!');
+}
+
+function togglePreview() {
+  previewMode=!previewMode;
+  document.body.classList.toggle('preview',previewMode);
+  if(previewMode) {
+    document.querySelectorAll('.selected').forEach(n=>n.classList.remove('selected'));
+    toast('Preview mode — your editing controls are hidden.');
+  } else {
+    toast('Back to editing mode!');
+  }
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&previewMode)togglePreview();
+  if((e.key==='Delete'||e.key==='Backspace')&&selected&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)&&!document.activeElement.isContentEditable)deleteSelected();
+});
+
+function makeFrame(page,x=0) {
+  addElement(page,'frame',{
+    x,y:18,w:90,h:300,
+    style:{background:'#fff8fc',borderColor:'#ffffff',borderRadius:15,objectFit:'cover'}
+  });
+}
+function init() {
+  // Page 2 starts with one large empty portrait frame.
+  makeFrame(2,0);
+  // Page 3 starts with exactly four empty vertical frames.
+  [0,1,2,3].forEach(i=>addElement(3,'frame',{
+    x:3+i*24,y:18,w:21,h:310,
+    style:{background:'#fff8fc',borderColor:'#ffffff',borderRadius:15,objectFit:'cover'}
+  }));
+  // Page 4 starts with exactly three empty vertical frames.
+  [0,1,2].forEach(i=>addElement(4,'frame',{
+    x:5+i*31,y:18,w:27,h:310,
+    style:{background:'#fff8fc',borderColor:'#ffffff',borderRadius:15,objectFit:'cover'}
+  }));
+  // Move default elements into their dedicated galleries.
+  for(let n of [2,3,4]) {
+    const gallery=$('gallery'+n);
+    pageElements[n].forEach(d=>{
+      const node=document.querySelector(`[data-id="${d.id}"]`);
+      if(node)gallery.appendChild(node);
+    });
+  }
+  // Make the main page content editable by selecting its text.
+  document.querySelectorAll('[data-edit],.editable-title,.thank-message').forEach(node=>{
+    node.style.cursor='text';
+    node.addEventListener('click',e=>{
+      e.stopPropagation();
+      const key=node.dataset.edit;
+      if(key) {
+        const input={name:'nameInput',date:'dateInput',venue:'venueInput'}[key];
+        const val=prompt('Edit '+key, node.textContent);
+        if(val!==null) { $(input).value=val;applyDetails(); }
+      } else {
+        const val=prompt('Edit text',node.textContent);
+        if(val!==null) {
+          snapshot();node.textContent=val;
+          if(node.classList.contains('editable-title'))$('headingInput').value=val;
+          if(node.classList.contains('thank-message'))$('thanksInput').value=val;
+        }
+      }
+    });
+  });
+  $('bgPicker').addEventListener('input',()=>setPageBackground());
+  loadProject();
+}
+init();
+</script>
+</body>
+</html>
